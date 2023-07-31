@@ -1,0 +1,13 @@
+.create_room--title {
+ color: black;
+ font-size: 1.2rem;
+}
+
+.modal__wrapper {
+    display: grid;
+    
+}
+
+.modal__wrapper--content li {
+    margin: 1rem 0;
+}
