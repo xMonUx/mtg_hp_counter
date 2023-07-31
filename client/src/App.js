@@ -1,19 +1,17 @@
-import React from 'react';
-
+import React from "react";
 import Routes from "./Routeing";
 import Layout from "./Layout";
-
-import io from "socket.io-client";
-
 import "./App.css";
 
-const socket = io.connect("http://localhost:5000");
+import { useSocket } from "./socketConnection";
 
 const App = () => {
+  const { isConnected } = useSocket();
+
   return (
     <div className="App">
       <Layout>
-        <Routes />
+        {isConnected ? <Routes /> : <div>Connecting...</div> }
       </Layout>
     </div>
   );

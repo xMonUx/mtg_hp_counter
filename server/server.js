@@ -40,6 +40,11 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("User connected with id:", socket.id);
 
+  socket.on("join_room", (player) => {
+    socket.join(player.roomId);
+    console.log(`Player with id: ${socket.id} joined room ${player.roomId}`);
+  });  
+
   socket.on("disconnect", () => {
     console.log("User disconnected with id:", socket.id);
   });
@@ -50,6 +55,7 @@ io.on("connection", (socket) => {
 app.post("/create-room", async (req, res) => {
   try {
     const room = await CreateRoom.create(req.body);
+    io.emit("new_room_created", room);
     res.status(200).json(room);
   } catch (error) {
     console.log(error.message);
