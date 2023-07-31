@@ -9,10 +9,7 @@ function Table() {
   const { socket } = useSocket();
   const [rows, setRows] = useState([]);
   const [isJoinModalOpen, setJoinModalOpen] = useState(false);
-
-  const joinRoom = () => {
-    setJoinModalOpen(true);
-  };
+  const [roomId, setRoomId] = useState('');
 
   const columns = [
     { field: "id", headerName: "Room", width: 200 },
@@ -25,7 +22,7 @@ function Table() {
       width: 230,
       renderCell: (params) => {
         return (
-          <Button variant="contained" color="primary" onClick={joinRoom}>
+          <Button variant="contained" color="primary" onClick={() => joinRoomBtn(params.row.id)}>
             Join
           </Button>
         );
@@ -59,6 +56,12 @@ function Table() {
     setRows((prevRows) => [...prevRows, { ...newRoom, id: newRoom._id }]);
   };
 
+  const joinRoomBtn = (roomId) => {
+    console.log("Joining room:", roomId);
+    setRoomId(roomId);
+    setJoinModalOpen(true);
+  };
+
   return (
     <div style={{ height: "100%", width: "100%" }}>
       <DataGrid
@@ -68,7 +71,7 @@ function Table() {
         rowsPerPageOptions={[5, 10]}
         getRowId={(row) => row.id} 
       />
-      {isJoinModalOpen && <JoinModal onClose={() => setJoinModalOpen(false)} />}
+      {isJoinModalOpen && <JoinModal onClose={() => setJoinModalOpen(false)} roomId={roomId}/>}
     </div>
   );
 }

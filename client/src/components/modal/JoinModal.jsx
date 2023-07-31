@@ -23,13 +23,14 @@ const style = {
 };
 
 
-function ChildModal({ onClose }) {
+function ChildModal({ onClose, roomId }) {
     const { socket } = useSocket();
     const [username, setUsername] = useState(""); 
 
     const joinRoom = () => {
         if (username !== "" && username !== null) {
-            socket.emit("join_room", { username, roomId: "123" });
+            socket.emit("join_room", { username, roomId });
+            console.log("Joining room:", roomId);
         }
     };
 

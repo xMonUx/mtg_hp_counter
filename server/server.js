@@ -43,6 +43,7 @@ io.on("connection", (socket) => {
   socket.on("join_room", (player) => {
     socket.join(player.roomId);
     console.log(`Player with id: ${socket.id} joined room ${player.roomId}`);
+    io.to(player.roomId).emit("room_joined", player.roomId);
   });  
 
   socket.on("disconnect", () => {
