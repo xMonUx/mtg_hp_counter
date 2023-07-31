@@ -4,6 +4,7 @@ import axios from "axios";
 
 import Button from "@mui/material/Button";
 
+
 function Table() {
   const [rows, setRows] = useState([]);
 
@@ -29,15 +30,6 @@ function Table() {
     },
   ];
 
-  const handleNewRoom = (room) => {
-    const formattedRoom = {
-      id: room._id,
-      name: room.name,
-      type: room.format,
-    };
-    setRows((prevRows) => [...prevRows, formattedRoom]);
-  };
-
   // Fetch data from the database
   useEffect(() => {
     axios
@@ -55,23 +47,10 @@ function Table() {
         console.log(error.message);
       });
 
-      const ws = new WebSocket("ws://localhost:8080");
-
-      ws.onmessage = (event) => {
-        const eventData = JSON.parse(event.data);
-        if (eventData.event === "new-room") {
-          handleNewRoom(eventData.data);
-        }
-      };
-
-      return () => {
-        ws.close();
-      };
-
   }, []);
 
   return (
-    <div style={{ height: 400, width: "100%", height: "100%" }}>
+    <div style={{ height: "100%", width: "100%" }}>
       <DataGrid
         rows={rows}
         columns={columns}
