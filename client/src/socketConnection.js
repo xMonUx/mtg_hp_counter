@@ -6,28 +6,35 @@ import { useNavigate } from "react-router-dom";
 const socket = io.connect("http://localhost:5000");
 
 export const useSocket = () => {
-    const [isConnected, setIsConnected] = useState(false);
+    const [isConnected, setIsConnected] = useState(socket.connected);
     const navigate = useNavigate();
 
     useEffect(() => {
-        socket.on("connect", () => {
+        const handleConnect = () => {
             setIsConnected(true);
-        });
+        };
 
-        socket.on("room_joined", (roomId) => {
+        const handleRoomJoined = (roomId) => {
             console.log(`Joined room ${roomId}`);
             navigate(`/room/${roomId}`);
-        });
+        };
 
-        socket.on("disconnect", () => {
+        const handleDisconnect = () => {
             setIsConnected(false);
-        });
+        };
+
+        socket.on("connect", handleConnect);
+        socket.on("room_joined", handleRoomJoined);
+        socket.on("disconnect", handleDisconnect);
+
         return () => {
-            socket.disconnect();
+            socket.off("connect", handleConnect);
+            socket.off("room_joined", handleRoomJoined);
+            socket.off("disconnect", handleDisconnect);
         };
     }, [navigate]);
 
-    return {isConnected, socket};
+    return { isConnected, socket };
 };
 
 
