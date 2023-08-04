@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 
@@ -6,9 +6,7 @@ const socket = io.connect("http://172.30.97.131:5000", {'force new connection': 
 
 export const useSocket = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const [roomJoined, setRoomJoined] = useState(false);
   const [roomId, setRoomId] = useState("");
-  const [hasNavigated, setHasNavigated] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,8 +16,8 @@ export const useSocket = () => {
 
     const handleRoomJoined = (roomId) => {
       console.log(`Joined room ${roomId}`);
-      setRoomJoined(true);
       setRoomId(roomId);
+      navigate(`/room/${roomId}`);
     };
 
     const handleDisconnect = () => {
@@ -35,14 +33,9 @@ export const useSocket = () => {
       socket.off("room_joined", handleRoomJoined);
       socket.off("disconnect", handleDisconnect);
     };
-  }, []);
+  }, [navigate]);
 
-  useEffect(() => {
-    if (roomJoined && !hasNavigated) {
-      navigate(`/room/${roomId}`);
-      setHasNavigated(true);
-    }
-  }, [roomJoined, navigate, roomId, hasNavigated]);
+
 
   return { isConnected, socket };
 };

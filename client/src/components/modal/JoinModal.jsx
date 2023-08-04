@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Room from "../../pages/Room"
 
 import { useSocket } from "../../socketConnection";
 

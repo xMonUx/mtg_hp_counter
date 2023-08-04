@@ -29,6 +29,7 @@ async function connect() {
 const http = require("http");
 const { Server } = require("socket.io");
 const server = http.createServer(app);
+const usersInRooms = {};
 
 const io = new Server(server, {
   cors: {
@@ -44,11 +45,26 @@ io.on("connection", (socket) => {
     socket.join(player.roomId);
     console.log(`Player with id: ${socket.id} joined room ${player.roomId}`);
     io.to(player.roomId).emit("room_joined", player.roomId);
-  });  
+
+    if (!usersInRooms[player.roomId]) {
+      usersInRooms[player.roomId] = [];
+    }
+    usersInRooms[player.roomId].push({
+      id: socket.id,
+      username: player.username,
+    });
+    io.to(player.roomId).emit("users_in_room", usersInRooms[player.roomId]);
+  });
 
   socket.on("disconnect", () => {
     console.log("User disconnected with id:", socket.id);
-  }); 
+    for (const roomId in usersInRooms) {
+      usersInRooms[roomId] = usersInRooms[roomId].filter(
+        (user) => user.id !== socket.id
+      );
+      io.to(roomId).emit("users_in_room", usersInRooms[roomId]);
+    }
+  });
 });
 
 // End-points
