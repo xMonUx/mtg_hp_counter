@@ -32,7 +32,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://172.30.97.131:3000",
     methods: ["GET", "POST", "PUT"],
   },
 });
@@ -48,9 +48,8 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("User disconnected with id:", socket.id);
-  });
+  }); 
 });
-
 
 // End-points
 app.post("/create-room", async (req, res) => {

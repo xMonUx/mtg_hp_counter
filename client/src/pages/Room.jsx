@@ -10,7 +10,7 @@ function Room() {
         <CssBaseline />
         <Container fixed>
           <ul>
-            <li>Current users: </li>
+            <li>Current users:</li>
             <li>Username: </li>
             <li>Room ID: </li>
           </ul>

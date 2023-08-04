@@ -35,7 +35,7 @@ export default function RoomModal({ open, handleClose, setOpen }) {
     };
   
     axios
-      .post("http://localhost:5000/create-room", data)
+      .post("http://172.30.97.131:5000/create-room", data)
       .then((response) => {
         console.log("Room created:", response.data);
         // Optionally, you can close the modal or show a success message here

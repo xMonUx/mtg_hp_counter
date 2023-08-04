@@ -12,7 +12,7 @@ function Table() {
   const [roomId, setRoomId] = useState('');
 
   const columns = [
-    { field: "id", headerName: "Room", width: 200 },
+    { field: "id", headerName: "Room", width: 100 },
     { field: "name", headerName: "Name", width: 230 },
     { field: "format", headerName: "Type", width: 230 },
     { field: "players", headerName: "Players", width: 230 },
@@ -41,7 +41,7 @@ function Table() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/create-room");
+      const response = await axios.get("http://172.30.97.131:5000/create-room");
       const rowsWithIds = response.data.map((row) => ({
         ...row,
         id: row._id,
