@@ -4,7 +4,7 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-import { useSocket } from "../../socketConnection";
+import { useSocket } from "../../socketConnection/socketConnection";
 
 import "./RoomModal.css";
 

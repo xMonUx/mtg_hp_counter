@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useSocket } from "../../socketConnection";
+import { useSocket } from "../../socketConnection/socketConnection";
 import { DataGrid } from "@mui/x-data-grid";
 import JoinModal from "../modal/JoinModal";
 import Button from "@mui/material/Button";
@@ -32,12 +32,12 @@ function Table() {
 
   useEffect(() => {
     fetchData();
-    socket.on("new_room_created", handleNewRoom);
+    socket.on("new_room_created", handleNewRoom);  ///////// TO POWODUJE PODWÓJNE DOŁĄCZENIE
 
     return () => {
       socket.off("new_room_created", handleNewRoom);
     };
-  }, []);
+  }, [socket]);
 
   const fetchData = async () => {
     try {

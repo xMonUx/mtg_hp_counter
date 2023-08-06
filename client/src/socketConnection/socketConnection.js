@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 
-const socket = io.connect("http://172.30.97.131:5000", {'force new connection': true });
+const socket = io.connect("http://192.168.1.13:5000");
 
 export const useSocket = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
@@ -24,9 +24,9 @@ export const useSocket = () => {
       setIsConnected(false);
     };
 
-    socket.once("connect", handleConnect);
-    socket.once("room_joined", handleRoomJoined);
-    socket.once("disconnect", handleDisconnect);
+    socket.on("connect", handleConnect);
+    socket.on("room_joined", handleRoomJoined);
+    socket.on("disconnect", handleDisconnect);
 
     return () => {
       socket.off("connect", handleConnect);
