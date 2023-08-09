@@ -9,6 +9,8 @@ import { Select } from "../";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
+import { createRoom } from "../../databaseFunctions"
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -20,31 +22,25 @@ const style = {
   p: 4,
 };
 
-export default function RoomModal({ open, handleClose, setOpen }) {
+export default function RoomModal({ open, handleClose, setOpen, onCreateRoom }) {
   const [roomName, setRoomName] = useState("");
   const [password, setPassword] = useState("");
   const [players, setPlayers] = useState("");
   const [format, setFormat] = useState("");
 
-  const handleCreateRoom = () => {
+  const handleCreateRoom = async () => {
     const data = {
       name: roomName,
       format,
       players: parseInt(players),
       password,
     };
-  
-    axios
-      .post("http://192.168.1.13:5000/create-room", data)
-      .then((response) => {
-        console.log("Room created:", response.data);
-        // Optionally, you can close the modal or show a success message here
-        handleClose();
-      })
-      .catch((error) => {
-        console.error("Error creating room:", error);
-        // Handle error appropriately (e.g., show an error message)
-      });
+
+    try {
+      await createRoom(data); 
+      handleClose();
+    } catch (error) {
+    }
   };
   
 

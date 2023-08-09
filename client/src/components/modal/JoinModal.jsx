@@ -22,18 +22,16 @@ const style = {
   pb: 3,
 };
 
-
 function ChildModal({ onClose, roomId }) {
-    const { socket } = useSocket();
-    const [username, setUsername] = useState(""); 
+  const { socket } = useSocket();
+  const [username, setUsername] = useState("");
 
-    const joinRoom = () => {
-        if (username !== "" && username !== null) {
-            socket.emit("join_room", { username, roomId });
-            console.log("Joining room:", roomId);
-            
-        }
-    };
+  //mozna wyrzucić nad compontents jako helpers function
+  const joinRoom = () => {
+    if (username !== "" && username !== null) {
+      socket.emit("join_room", { username, roomId });
+    }
+  };
 
   return (
     <div className="modal__wrapper">
@@ -48,11 +46,15 @@ function ChildModal({ onClose, roomId }) {
             <span className="create_room--title">Join room</span>
             <ul>
               <li>
-                <TextField label="Enter your name" size="small" onChange={(event) => setUsername(event.target.value)} />
+                <TextField
+                  label="Enter your name"
+                  size="small"
+                  onChange={(event) => setUsername(event.target.value)}
+                />
               </li>
             </ul>
 
-            <Button onClick={joinRoom}>Join</Button>
+            <Button onClick={joinRoom/*(socket, username, roomId)*/}>Join</Button>
           </Box>
         </div>
       </Modal>

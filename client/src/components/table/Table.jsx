@@ -5,11 +5,13 @@ import { DataGrid } from "@mui/x-data-grid";
 import JoinModal from "../modal/JoinModal";
 import Button from "@mui/material/Button";
 
+import { fetchRooms } from "../../databaseFunctions";
+
 function Table() {
   const { socket } = useSocket();
   const [rows, setRows] = useState([]);
   const [isJoinModalOpen, setJoinModalOpen] = useState(false);
-  const [roomId, setRoomId] = useState('');
+  const [roomId, setRoomId] = useState("");
 
   const columns = [
     { field: "id", headerName: "Room", width: 100 },
@@ -22,7 +24,11 @@ function Table() {
       width: 230,
       renderCell: (params) => {
         return (
-          <Button variant="contained" color="primary" onClick={() => joinRoomBtn(params.row.id)}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => joinRoomBtn(params.row.id)}
+          >
             Join
           </Button>
         );
@@ -32,24 +38,22 @@ function Table() {
 
   useEffect(() => {
     fetchData();
-    socket.on("new_room_created", handleNewRoom);  ///////// TO POWODUJE PODWÓJNE DOŁĄCZENIE
+    socket.on("new_room_created", handleNewRoom); ///////// TO POWODUJE PODWÓJNE DOŁĄCZENIE
 
     return () => {
       socket.off("new_room_created", handleNewRoom);
     };
   }, [socket]);
 
+  //system zarządzania stanem, redux
+
   const fetchData = async () => {
-    try {
-      const response = await axios.get("http://172.30.97.131:5000/create-room");
-      const rowsWithIds = response.data.map((row) => ({
-        ...row,
-        id: row._id,
-      }));
-      setRows(rowsWithIds);
-    } catch (error) {
-      console.log("Error fetching data:", error);
-    }
+    const data = await fetchRooms();
+    const rowsWithIds = data.map((row) => ({
+      ...row,
+      id: row._id,
+    }));
+    setRows(rowsWithIds);
   };
 
   const handleNewRoom = (newRoom) => {
@@ -57,7 +61,6 @@ function Table() {
   };
 
   const joinRoomBtn = (roomId) => {
-    console.log("Joining room:", roomId);
     setRoomId(roomId);
     setJoinModalOpen(true);
   };
@@ -69,9 +72,11 @@ function Table() {
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5, 10]}
-        getRowId={(row) => row.id} 
+        getRowId={(row) => row.id}
       />
-      {isJoinModalOpen && <JoinModal onClose={() => setJoinModalOpen(false)} roomId={roomId}/>}
+      {isJoinModalOpen && (
+        <JoinModal onClose={() => setJoinModalOpen(false)} roomId={roomId} />
+      )}
     </div>
   );
 }

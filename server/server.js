@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const CreateRoom = require("./data/create_room");
 const Player = require("./data/player");
+require("dotenv").config();
 
 // Create Express + mongoose server
 const app = express();
@@ -13,12 +14,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
-const uri =
-  "mongodb+srv://streaminteractions:testowanie@cluster0.bgnshvu.mongodb.net/?retryWrites=true&w=majority";
-
 async function connect() {
   try {
-    await mongoose.connect(uri);
+    await mongoose.connect(process.env.DATABASE_URL);
     console.log("Connected to MongoDB");
   } catch (error) {
     console.error(error);
@@ -33,7 +31,7 @@ const usersInRooms = {};
 
 const io = new Server(server, {
   cors: {
-    origin: "http://172.30.97.131:3000",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST", "PUT"],
   },
 });
