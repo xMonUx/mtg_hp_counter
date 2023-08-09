@@ -4,25 +4,41 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function SelectSmall({ value, onChange }) {
+export default function CustomSelect({ id, value, onChange }) {
+  let options = [];
+
+  if (id === 1) {
+    options = [
+      "COMMANDER",
+      "STANDARD",
+      "MODERN",
+      "ALCHEMY",
+      "BOOSTER DRAFT",
+      "PIONEER",
+      "SEALED DECK",
+      "EXPLORER"
+    ];
+  } else if (id >= 2 && id <= 6) {
+    options = Array.from({ length: 5 }, (_, index) => `${index + 1}`);
+  }
+
+  const labelText = id === 1 ? 'Format' : `Players`;
+
   return (
     <FormControl sx={{ minWidth: 320 }} size="small">
-      <InputLabel id="demo-select-small-label">Type</InputLabel>
+      <InputLabel id={`demo-select-${id}-label`}>{labelText}</InputLabel>
       <Select
-        labelId="demo-select-small-label"
-        id="demo-select-small"
+        labelId={`demo-select-${id}-label`}
+        id={`demo-select-${id}`}
         value={value}
-        label="Type"
+        label={`Type ${id}`}
         onChange={onChange}
       >
-        <MenuItem value="COMMANDER">COMMANDER</MenuItem>
-        <MenuItem value="STANDARD">STANDARD</MenuItem>
-        <MenuItem value="MODERN">MODERN</MenuItem>
-        <MenuItem value="ALCHEMY">ALCHEMY</MenuItem>
-        <MenuItem value="BOOSTER DRAFT">BOOSTER DRAFT</MenuItem>
-        <MenuItem value="PIONEER">PIONEER</MenuItem>
-        <MenuItem value="SEALED DECK">SEALED DECK</MenuItem>
-        <MenuItem value="EXPLORER">EXPLORER</MenuItem>
+        {options.map((option) => (
+          <MenuItem key={option} value={option}>
+            {option}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );

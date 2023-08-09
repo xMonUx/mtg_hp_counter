@@ -35,15 +35,11 @@ export const useSocket = () => {
       socket.off("room_joined", handleRoomJoined);
       socket.off("disconnect", handleDisconnect);
     };
-  }, [navigate]);
+  });
 
 
 
   return { isConnected, socket };
 };
 
-function socketConnection() {
-  return null;
-}
 
-export default socketConnection;

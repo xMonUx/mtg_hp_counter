@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useSocket } from "../../socketConnection/socketConnection";
 import { DataGrid } from "@mui/x-data-grid";
 import JoinModal from "../modal/JoinModal";
 import Button from "@mui/material/Button";
@@ -8,7 +6,6 @@ import Button from "@mui/material/Button";
 import { fetchRooms } from "../../databaseFunctions";
 
 function Table() {
-  const { socket } = useSocket();
   const [rows, setRows] = useState([]);
   const [isJoinModalOpen, setJoinModalOpen] = useState(false);
   const [roomId, setRoomId] = useState("");
@@ -38,14 +35,11 @@ function Table() {
 
   useEffect(() => {
     fetchData();
-    socket.on("new_room_created", handleNewRoom); ///////// TO POWODUJE PODWÓJNE DOŁĄCZENIE
 
-    return () => {
-      socket.off("new_room_created", handleNewRoom);
+    const handleNewRoom = (newRoom) => {
+      setRows((prevRows) => [...prevRows, { ...newRoom, id: newRoom._id }]);
     };
-  }, [socket]);
-
-  //system zarządzania stanem, redux
+  });
 
   const fetchData = async () => {
     const data = await fetchRooms();
@@ -54,10 +48,6 @@ function Table() {
       id: row._id,
     }));
     setRows(rowsWithIds);
-  };
-
-  const handleNewRoom = (newRoom) => {
-    setRows((prevRows) => [...prevRows, { ...newRoom, id: newRoom._id }]);
   };
 
   const joinRoomBtn = (roomId) => {

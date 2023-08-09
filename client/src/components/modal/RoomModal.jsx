@@ -9,7 +9,7 @@ import { Select } from "../";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-import { createRoom } from "../../databaseFunctions"
+import { createRoom } from "../../databaseFunctions";
 
 const style = {
   position: "absolute",
@@ -22,7 +22,12 @@ const style = {
   p: 4,
 };
 
-export default function RoomModal({ open, handleClose, setOpen, onCreateRoom }) {
+export default function RoomModal({
+  open,
+  handleClose,
+  setOpen,
+  onCreateRoom,
+}) {
   const [roomName, setRoomName] = useState("");
   const [password, setPassword] = useState("");
   const [players, setPlayers] = useState("");
@@ -37,12 +42,10 @@ export default function RoomModal({ open, handleClose, setOpen, onCreateRoom }) 
     };
 
     try {
-      await createRoom(data); 
+      await createRoom(data);
       handleClose();
-    } catch (error) {
-    }
+    } catch (error) {}
   };
-  
 
   return (
     <div className="modal__wrapper">
@@ -74,18 +77,17 @@ export default function RoomModal({ open, handleClose, setOpen, onCreateRoom }) 
                 />
               </li>
               <li>
-                <TextField
-                  label="Players"
-                  type="number"
-                  size="small"
-                  value={players}
-                  onChange={(e) => setPlayers(e.target.value)}
+                <Select
+                  id={1}
+                  value={format}
+                  onChange={(e) => setFormat(e.target.value)}
                 />
               </li>
               <li>
                 <Select
-                  value={format}
-                  onChange={(e) => setFormat(e.target.value)}
+                  id={2}
+                  value={players}
+                  onChange={(e) => setPlayers(e.target.value)}
                 />
               </li>
             </ul>

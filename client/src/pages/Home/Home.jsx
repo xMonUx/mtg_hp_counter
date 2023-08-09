@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Tooltip from "@mui/material/Tooltip";
-import { Table, RoomModal } from "../components";
+import { Table, RoomModal } from "../../components";
 import "./Home.css";
 
 export default function Home() {
