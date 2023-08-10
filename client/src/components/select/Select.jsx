@@ -25,7 +25,7 @@ export default function CustomSelect({ id, value, onChange }) {
   const labelText = id === 1 ? 'Format' : `Players`;
 
   return (
-    <FormControl sx={{ minWidth: 320 }} size="small">
+    <FormControl sx={{ minWidth: 224 }} size="small">
       <InputLabel id={`demo-select-${id}-label`}>{labelText}</InputLabel>
       <Select
         labelId={`demo-select-${id}-label`}
