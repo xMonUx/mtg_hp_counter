@@ -27,7 +27,8 @@ async function connect() {
 const http = require("http");
 const { Server } = require("socket.io");
 const server = http.createServer(app);
-const usersInRooms = {};
+
+let users = [];
 
 const io = new Server(server, {
   cors: {
@@ -35,33 +36,33 @@ const io = new Server(server, {
     methods: ["GET", "POST", "PUT"],
   },
 });
-
+ 
 io.on("connection", (socket) => {
   console.log("User connected with id:", socket.id);
 
-  socket.on("join_room", (player) => {
-    socket.join(player.roomId);
-    console.log(`Player with id: ${socket.id} joined room ${player.roomId}`);
-    io.to(player.roomId).emit("room_joined", player.roomId);
+  socket.on("join_room", (data) => {
+    const { roomId, storedUsername } = data;
+    socket.join(roomId);
 
-    if (!usersInRooms[player.roomId]) {
-      usersInRooms[player.roomId] = [];
-    }
-    usersInRooms[player.roomId].push({
-      id: socket.id,
-      username: player.username,
-    });
-    io.to(player.roomId).emit("users_in_room", usersInRooms[player.roomId]);
+    users.push(data);
+    io.to(roomId).emit('new_user_response', users);
+
+    io.to(roomId).emit("room_joined", roomId);
+
+    console.log(`Player with id: ${socket.id} and name: ${storedUsername} joined room ${roomId}`);
   });
 
-  socket.on("disconnect", () => {
+  socket.on("new_user", (data) => {
+    io.emit('new_user_response', users);
+  });
+
+  socket.on('disconnect', () => {
     console.log("User disconnected with id:", socket.id);
-    for (const roomId in usersInRooms) {
-      usersInRooms[roomId] = usersInRooms[roomId].filter(
-        (user) => user.id !== socket.id
-      );
-      io.to(roomId).emit("users_in_room", usersInRooms[roomId]);
-    }
+    users = users.filter((user) => user.socketID !== socket.id);
+
+    io.emit('new_user_response', users);
+    socket.disconnect();
+
   });
 });
 
@@ -81,6 +82,22 @@ app.get("/create-room", async (req, res) => {
   try {
     const room = await CreateRoom.find({});
     res.status(200).json(room);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.get("/validate-room/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const room = await CreateRoom.findById(id);
+
+    if (room) {
+      res.status(200).json({ isValid: true });
+    } else {
+      res.status(404).json({ isValid: false });
+    }
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });

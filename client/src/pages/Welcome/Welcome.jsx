@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSocket } from "../../socketConnection/socketConnection"
+
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/system";
 import Tooltip from "@mui/material/Tooltip";
 
@@ -15,6 +17,7 @@ function Welcome() {
   );
   const navigate = useNavigate();
   const [isClicked, setIsClicked] = useState(false);
+  const { socket } = useSocket();
 
   const maxLength = 20;
 
@@ -99,7 +102,7 @@ function Welcome() {
               <li></li>
             </ul>
           </nav>
-          <div className="text-center text-2xl mt-96">
+          <div className="text-center text-2xl mt-96 md:mt-56">
             <h1 className="py-5">Choose your username</h1>
             <ul>
               <li>

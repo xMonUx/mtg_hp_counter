@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { Select } from "..";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import BasicModal from "../modal/roomidModal";
-
+ 
 import { createRoom } from "../../databaseFunctions";
 
 export default function CreateTab({
@@ -16,15 +16,9 @@ export default function CreateTab({
   const [password, setPassword] = useState("");
   const [players, setPlayers] = useState("");
   const [format, setFormat] = useState("");
-  const [username, setUsername] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [CreatedRoomId, setCreatedRoomId] = useState("");
-
-  useEffect(() => {
-    // Fetch the username from local storage
-    const storedUsername = localStorage.getItem("username");
-    setUsername(storedUsername || "");
-  }, []);
+  const storedUsername = localStorage.getItem("username");
 
   const handleCreateRoom = async () => {
     const data = {
@@ -37,7 +31,6 @@ export default function CreateTab({
 
     try {
       const newRoom = await createRoom(data);
-      // console.log(`Room created with id ${_id}`);
       setRoomName("");     
       setFormat("");       
       setPlayers("");      
@@ -50,7 +43,7 @@ export default function CreateTab({
   return (
     <div className="grid justify-center ">
       <ul>
-      <span className="mb-3">Hello, {username}!</span>
+      <span className="mb-3">Hello, {storedUsername}!</span>
         <li className="mb-3">
 
           <TextField

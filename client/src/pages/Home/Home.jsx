@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Home.css";
 import { Navbar } from "../../components";
-import RoomModal from "../../components/tabs/CreateTab";
-import JoinModal from "../../components/tabs/JoinTab";
+import CreateTab from "../../components/tabs/CreateTab";
+import JoinTab from "../../components/tabs/JoinTab";
 
 //Icons
 import AddIcon from "@mui/icons-material/Add";
@@ -76,11 +76,11 @@ export default function Home() {
   });
 
   return (
-    <div>
-      <main className="bg-gray-200 px-10 overflow-hidden dark:bg-slate-600">
+    <div className="overflow-hidden">
+      <main className="bg-gray-200 px-10 overflow-hidden dark:bg-slate-600 ">
         <section className="min-h-screen">
           <Navbar />
-          <div className=" text-2xl mt-96 flex justify-center">
+          <div className=" text-2xl flex justify-center">
             <div className=" ">
               <Box sx={{ bgcolor: "background.paper", width: 500 }}>
                 <AppBar position="static">
@@ -111,10 +111,10 @@ export default function Home() {
                   dir={theme.direction}
                   className="justify-center"
                 >
-                  <RoomModal />
+                  <CreateTab />
                 </TabPanel>
                 <TabPanel value={value} index={1} dir={theme.direction}>
-                  <JoinModal />
+                  <JoinTab />
                 </TabPanel>
               </Box>
             </div>
