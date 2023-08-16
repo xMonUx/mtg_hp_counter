@@ -68,7 +68,7 @@ export function TabsData() {
     {
       id: 4,
       icon: <DangerousIcon />,
-      text: "",
+      text: "2",
       tooltip: "Increase Poison",
       order: 2,
     },
