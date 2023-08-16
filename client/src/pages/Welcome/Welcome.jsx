@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSocket } from "../../socketConnection/socketConnection"
+
+import { generateRandomNames } from "./RandomNamesGen";
 
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
@@ -17,53 +18,21 @@ function Welcome() {
   );
   const navigate = useNavigate();
   const [isClicked, setIsClicked] = useState(false);
-  const { socket } = useSocket();
 
   const maxLength = 20;
 
   const handleTextFieldClick = () => {
-    setIsClicked(!isClicked); // Toggle the isClicked state
+    setIsClicked(!isClicked);
   };
 
   const LargerIcon = styled(SettingsIcon)({
     fontSize: 60,
   });
 
-  const randomNames = [
-    "Wizard123",
-    "SorcererMagic",
-    "EnchantingPlayer",
-    "MysticalMage",
-    "SmallPenis123",
-    "GiantBalls123",
-    "EtherealWitch",
-    "ArcaneWarlock",
-    "SpellbindingSage",
-    "MythicalMagician",
-    "CunningConjuror",
-    "MysticScroll",
-    "EnigmaticEnchanter",
-    "SpectralSorcery",
-    "ShadowySpellcaster",
-    "WanderingWizard",
-    "CelestialSorceress",
-    "AstralWarlock",
-    "EnchantedIllusionist",
-    "OracleOfMagic",
-    "ArcaneJourneyman",
-    "MysticalMarauder",
-    "EpicEnchanter",
-    "WhisperingWitch",
-    "RuneboundMage",
-    "WiseWizardry",
-  ];
-
   useEffect(() => {
     document.title = "Welcome to Magic: The Battle APP!";
-    // Generate a random index for the randomNames array
-    const randomIndex = Math.floor(Math.random() * randomNames.length);
-    // Set the random name as the initial username
-    setUsername(randomNames[randomIndex]);
+    const randomNames = generateRandomNames();
+    setUsername(randomNames);
 
     localStorage.setItem("darkMode", darkMode);
   }, [darkMode]);

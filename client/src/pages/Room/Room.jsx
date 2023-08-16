@@ -5,8 +5,6 @@ import { PlayerTab } from "../../components";
 
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { styled } from "@mui/system";
 import Tooltip from "@mui/material/Tooltip";
 
 function Room() {
@@ -16,9 +14,6 @@ function Room() {
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("darkMode") === "true" || false
   );
-  const LargerIcon = styled(SettingsIcon)({
-    fontSize: 60,
-  });
 
   useEffect(() => {
     socket.on("new_user_response", (data) => setUsers(data));

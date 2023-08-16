@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -24,7 +25,6 @@ export default function BasicModal({ open, onClose, roomId }) {
 
   const handleCopyClick = () => {
     try {
-      // Copy the content from the input field to the clipboard
       navigator.clipboard.writeText(roomId);
       setShowSuccessAlert(true);
     } catch (error) {

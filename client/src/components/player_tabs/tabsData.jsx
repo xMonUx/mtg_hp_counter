@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useSocket } from "../../services/socket.io/socketConnection";
+import { useSocketListeners } from "../../utils/useSocketListeners";
+
 import AddIcon from "@mui/icons-material/Add";
 import DangerousIcon from "@mui/icons-material/Dangerous";
 import RemoveIcon from "@mui/icons-material/Remove";
 import StarIcon from "@mui/icons-material/Star";
 import Battery6BarIcon from "@mui/icons-material/Battery6Bar";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
-import { useSocket } from "../../socketConnection/socketConnection";
+
+
 
 const defaultUser = {
   label: localStorage.getItem("username"),
@@ -18,25 +22,7 @@ export function TabsData() {
   const [users, setUsers] = useState(initialUsers);
   const { socket } = useSocket();
 
-  useEffect(() => {
-    socket.on("new_user_response", (data) => {
-        setUsers(data);
-        localStorage.setItem("userData", JSON.stringify(data));
-    });
-
-    socket.on("disconnect", () => {
-      const updatedUsers = users.filter(
-        (user) => user.storedUsername !== localStorage.getItem("username")
-      );
-      setUsers(updatedUsers);
-      localStorage.setItem("userData", JSON.stringify(updatedUsers));
-    });
-
-    return () => {
-      socket.off("new_user_response");
-      socket.off("disconnect");
-    };
-  }, [socket, users]);
+  useSocketListeners(socket, users, setUsers);
 
   const tabData = users.map((user) => ({
     label: user.storedUsername,
@@ -68,7 +54,7 @@ export function TabsData() {
     {
       id: 4,
       icon: <DangerousIcon />,
-      text: "2",
+      text: "",
       tooltip: "Increase Poison",
       order: 2,
     },
