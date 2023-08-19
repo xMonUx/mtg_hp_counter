@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { joinRoomWithValidation } from "../../utils/databaseFunctions";
-import { useSocket } from "../../socketConnection/socketConnection";
+import { useSocket } from "../../services/socket.io/socketConnection";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";

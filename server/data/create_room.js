@@ -26,6 +26,16 @@ const roomSchema = mongoose.Schema(
                 },
                 message: "Invalid password format. Password can only contain numbers, letters, and special symbols."
             }
+        },
+        host: {
+            userId: {
+                type: mongoose.Schema.Types.ObjectId,
+                required: true
+            },
+            username: {
+                type: String,
+                required: true
+            }
         }
     },
     {

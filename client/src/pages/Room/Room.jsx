@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSocket } from "../../socketConnection/socketConnection";
+import { useSocket } from "../../services/socket.io/socketConnection";
 
 import { PlayerTab } from "../../components";
 
@@ -10,7 +10,6 @@ import Tooltip from "@mui/material/Tooltip";
 function Room() {
   const [users, setUsers] = useState([]);
   const { socket } = useSocket();
-  const storedUsername = localStorage.getItem("username");
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("darkMode") === "true" || false
   );
